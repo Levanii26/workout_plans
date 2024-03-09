@@ -2,12 +2,12 @@ from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import WorkoutPlan, Exercise
+from .models import WorkoutPlan, Exercise, UserWeight, UserFitnessGoal
 from .serializers import WorkoutPlanSerializer, ExerciseSerializer
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserWeightSerializer, UserFitnessGoalSerializer
 
 class UserRegistrationView(APIView):
     def post(self, request):
@@ -57,3 +57,29 @@ class ExerciseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
     permission_classes = [IsAuthenticated]
+
+class UserWeightView(APIView):
+    def get(self, request):
+        weights = UserWeight.objects.filter(user=request.user)
+        serializer = UserWeightSerializer(weights, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = UserWeightSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserFitnessGoalView(APIView):
+    def get(self, request):
+        goals = UserFitnessGoal.objects.filter(user=request.user)
+        serializer = UserFitnessGoalSerializer(goals, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = UserFitnessGoalSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
