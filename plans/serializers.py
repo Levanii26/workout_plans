@@ -32,3 +32,13 @@ class ExerciseInstanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExerciseInstance
         fields = '__all__'
+
+class UserWeightSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserWeight
+        fields = '__all__'
+
+class UserFitnessGoalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFitnessGoal
+        fields = '__all__'
