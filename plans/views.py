@@ -1,6 +1,9 @@
-from rest_framework import status
+from rest_framework import status, generics
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from .models import WorkoutPlan, Exercise
+from .serializers import WorkoutPlanSerializer, ExerciseSerializer
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -31,3 +34,26 @@ class UserLogoutView(APIView):
     def post(self, request):
         logout(request)
         return Response(status=status.HTTP_200_OK)
+    
+class WorkoutPlanListCreateView(generics.ListCreateAPIView):
+    queryset = WorkoutPlan.objects.all()
+    serializer_class = WorkoutPlanSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class WorkoutPlanRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = WorkoutPlan.objects.all()
+    serializer_class = WorkoutPlanSerializer
+    permission_classes = [IsAuthenticated]
+
+class ExerciseListCreateView(generics.ListCreateAPIView):
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer
+    permission_classes = [IsAuthenticated]
+
+class ExerciseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer
+    permission_classes = [IsAuthenticated]
