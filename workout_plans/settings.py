@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'plans',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'crispy_forms', 
 ]
 
 MIDDLEWARE = [
@@ -84,6 +87,14 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 # Password validation
