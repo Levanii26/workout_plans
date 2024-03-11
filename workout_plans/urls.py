@@ -6,11 +6,11 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="fitness-api.p.rapidapi.com",
+      title="Personalized Workout Plan API",
       default_version='v1',
       description="API for managing personalized workout plans",
       terms_of_service="https://www.example.com/terms/",
-      contact=openapi.Contact(email="contact@example.com"),
+      contact=openapi.Contact(email="career.chutlshvili1@gmail.com"),
       license=openapi.License(name="BSD License"),
    ),
    public=True,
@@ -19,6 +19,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("", include("plans.urls")),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include('plans.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
